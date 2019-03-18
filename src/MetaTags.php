@@ -54,7 +54,9 @@ class MetaTags
         }
 
         if (isset($templates[$page->template()->name()])) {
-            $this->data = A::merge($this->data, $templates[$page->template()->name()]);
+            $tagsForTemplate = $templates[$page->intendedTemplate()->name()];
+            $tagsForTemplate = is_callable($tagsForTemplate) ? $tagsForTemplate($page, site()) : $tagsForTemplate;
+            $this->data = A::merge($this->data, $tagsForTemplate);
         }
 
         static::$instance = $this;
